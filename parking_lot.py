@@ -26,14 +26,23 @@ class ParkingLot(object):
         return self.slot_count > 0
 
     def create_parking_lot(self, count):
-        try:
-            self.slot_count = count
-            self.free_slots = list(range(1, count+1))
-            return "Created a parking lot with {} slots".format(count)
-        except Exception as e:
-            return "Invalid slot count {}".format(e.message)
+        '''
+        :param count: slot count
+        :return: message
+        '''
+
+        self.slot_count = count
+        self.free_slots = list(range(1, count+1))
+        return "Created a parking lot with {} slots".format(count)
 
     def park(self, reg_no, color):
+        '''
+        Allocate slot for vehicle
+        :param reg_no: Vehicle registration number
+        :param color: Vehicle color
+        :return: Message
+        '''
+
         if not self.check_slot_created():
             return "Parking lot not created!"
 
@@ -47,12 +56,18 @@ class ParkingLot(object):
 
         free_slot = sorted(self.free_slots)[0]
         self.free_slots.remove(free_slot)
-        self.busy_slots[free_slot] = {"color": color, "reg_no": reg_no.upper()}
+        self.busy_slots[free_slot] = Car(reg_no.upper(), color)
         self.reg_slot_map[reg_no] = free_slot
 
         return "Allocated slot number: {}".format(free_slot)
 
     def leave(self, slot):
+        '''
+        Release slot
+        :param slot: Slot number needs to be released
+        :return: Message
+        '''
+
         # Check slot created or not
         if not self.check_slot_created():
             return "Parking lot not created!"
@@ -66,7 +81,7 @@ class ParkingLot(object):
             return "Slot number {} is free".format(slot)
 
         # delete from reg_slot_map
-        reg_no = self.busy_slots[slot]['reg_no']
+        reg_no = self.busy_slots[slot].reg_no
         del self.reg_slot_map[reg_no]
 
         # Delete from busy slot
@@ -78,6 +93,11 @@ class ParkingLot(object):
         return "Slot number {} is free".format(slot)
 
     def status(self):
+        '''
+        Print current status of parking slot
+        :return:
+        '''
+
         # Check slot created or not
         if not self.check_slot_created():
             return "Parking lot not created!"
@@ -89,25 +109,35 @@ class ParkingLot(object):
         # Print slot details in table format
         print "Slot No  Registration No \t Color"
         for k, v in self.busy_slots.items():
-            print "{} \t\t {} \t\t {}".format(k, v['reg_no'], v['color'])
+            print "{} \t\t {} \t\t {}".format(k, v.reg_no, v.color)
 
     def registration_numbers_for_cars_with_colour(self, color):
+        '''
+        :param color: Vehicle color
+        :return: Print list of vehicle numbers (reg no)
+        '''
+
         # Check slot created or not
         if not self.check_slot_created():
             return "Parking lot not created!"
-        vehicles = [k['reg_no']for k in self.busy_slots.values() if k['color'].lower() == color.lower()]
+        vehicles = [k.reg_no for k in self.busy_slots.values() if k.color.lower() == color.lower()]
         if not vehicles:
             return "{} color vehicle not exisit!".format(color.capitalize())
 
         return ", ".join(vehicles)
 
     def slot_numbers_for_cars_with_colour(self, color):
+        '''
+        :param color: Vehicle color
+        :return: List of vehicle numbers (reg no)
+        '''
+
         # Check slot created or not
         if not self.check_slot_created():
             return "Parking lot not created!"
 
         # Get list of vehicle numbers from busy slots
-        reg_numbers = [k['reg_no']for k in self.busy_slots.values() if k['color'].lower() == color.lower()]
+        reg_numbers = [k.reg_no for k in self.busy_slots.values() if k.color.lower() == color.lower()]
         if not reg_numbers:
             return "{} color vehicle does not exisit!".format(color.capitalize())
 
@@ -115,6 +145,11 @@ class ParkingLot(object):
         return ", ".join([str(self.reg_slot_map[k]) for k in reg_numbers])
 
     def slot_number_for_registration_number(self, reg_no):
+        '''
+        :param reg_no: Vehicle number(reg no)
+        :return: slot number of the corresponding vehicle number
+        '''
+
         # Check slot created or not
         if not self.check_slot_created():
             return "Parking lot not created!"
@@ -126,9 +161,21 @@ class ParkingLot(object):
         return slot
 
     def is_valid_command(self, command):
+        '''
+        Validate entered command
+        :param command: Command needs to be executed
+        :return: True/False
+        '''
+
         return command in self.VALID_COMMANDS
 
     def execute_command(self, command):
+        '''
+        Execute entered command
+        :param command: Command needs to be executed
+        :return: Print execution output
+        '''
+
         inputs = command.strip().split(" ")
         command = inputs[0]
         input_length = len(inputs)
