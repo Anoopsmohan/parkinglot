@@ -15,7 +15,7 @@ class ParkingLot(object):
 
     VALID_COMMANDS = ['create_parking_lot', 'park', 'leave', 'status', 'registration_numbers_for_cars_with_colour',
                       'slot_numbers_for_cars_with_colour', 'slot_number_for_registration_number']
-    
+
     def __init__(self):
         self.slot_count = 0
         self.free_slots = []
@@ -129,7 +129,7 @@ class ParkingLot(object):
         return command in self.VALID_COMMANDS
 
     def execute_command(self, command):
-        inputs = command.split(" ")
+        inputs = command.strip().split(" ")
         command = inputs[0]
         input_length = len(inputs)
         if command == "create_parking_lot" and input_length == 2:
@@ -151,6 +151,7 @@ class ParkingLot(object):
 
     def init_interactive_mode(self):
         print "Please enter the commands. Enter 'exit' to quit"
+
         while True:
             command = raw_input()
 
@@ -160,9 +161,9 @@ class ParkingLot(object):
                 print "Invalid command. Please check again."
             if command.upper() == 'EXIT': break
 
-
-    def init_file_mode(self):
-        pass
+    def init_file_mode(self, file_path):
+        for command in open(file_path, "r"):
+            if command.strip(): self.execute_command(command)
 
 
 class ValidateArgument(object):
@@ -198,7 +199,7 @@ if __name__ == '__main__':
 
             if not validate_argument.validate_file_path(): print "Incorrect file path. Please check again."
             elif not validate_argument.validate_extension(): print "Incorrect file extension. Please use .txt file"
-            else: parking_lot.init_file_mode()
+            else: parking_lot.init_file_mode(sys.argv[1])
 
         else:
             print "Invalid arguments. Please use 'python parking_lot.py <input file path>'"
