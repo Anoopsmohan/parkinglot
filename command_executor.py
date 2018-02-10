@@ -202,4 +202,7 @@ class ParkingLot(object):
 
     def init_file_mode(self, file_path):
         for command in open(file_path, "r"):
-            if command.strip(): self.execute_command(command)
+            if command.strip() and self.is_valid_command(command.strip().split(" ")[0].lower()):
+                self.execute_command(command)
+            elif command.strip():
+                print("Invalid command ({}). Please check again.".format(command))
