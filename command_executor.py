@@ -138,7 +138,7 @@ class ParkingLot(object):
 
         vehicles = [k.reg_no for k in self.busy_slots.values() if k.color.lower() == color.lower()]
         if not vehicles:
-            return "{} color vehicle not exisit!".format(color.capitalize())
+            return "{} color vehicle does not exist!".format(color.capitalize())
 
         return ", ".join(vehicles)
 
@@ -159,7 +159,7 @@ class ParkingLot(object):
         # Get list of vehicle numbers from busy slots
         reg_numbers = [k.reg_no for k in self.busy_slots.values() if k.color.lower() == color.lower()]
         if not reg_numbers:
-            return "{} color vehicle does not exisit!".format(color.capitalize())
+            return "{} color vehicle does not exist!".format(color.capitalize())
 
         # Join slot numbers
         return ", ".join([str(self.reg_slot_map[k]) for k in reg_numbers])

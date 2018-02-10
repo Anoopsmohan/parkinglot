@@ -11,7 +11,7 @@ python 2.7 +
 ##### Interactive mode
 
 ```
-python parking_lot.py input_file.txt
+python parking_lot.py
 ```
 
 ##### File mode
