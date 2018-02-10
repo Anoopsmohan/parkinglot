@@ -1,8 +1,8 @@
-# parkinglot
+# Parkinglot implementation in python
 
 ## Dependencies
 ```
-python 2.7 +
+  python 2.7 +
 ```
 ## How to run the program?
 
@@ -11,7 +11,7 @@ python 2.7 +
 ##### Interactive mode
 
 ```
-python parking_lot.py
+  python parking_lot.py
 ```
 
 ##### File mode
@@ -19,5 +19,13 @@ python parking_lot.py
 Supporting file extensions: [.txt]
 
 ```
-python parking_lot.py input_file.txt > <output file name>
+  python parking_lot.py input_file.txt > <output file name>
+```
+
+## How to execute test cases?
+
+### Execute following command from project home directory
+
+```
+  python -m unittest discover -v
 ```
