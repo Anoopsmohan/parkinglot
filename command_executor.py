@@ -27,6 +27,9 @@ class ParkingLot(object):
         self.free_slots = list(range(1, count+1))
         return "Created a parking lot with {} slots".format(count)
 
+    def validate_vehicle_number(self, reg_no):
+        return len(reg_no.split("-")) == 4
+
     def park(self, reg_no, color):
         '''
         Allocate slot for vehicle
@@ -45,6 +48,10 @@ class ParkingLot(object):
         slot = self.reg_slot_map.get(reg_no)
         if slot:
             return "Vehicle {} already there in slot {}".format(reg_no, slot)
+
+        # Validate vehicle number
+        if not self.validate_vehicle_number(reg_no):
+            return "Invalid vehicle number"
 
         free_slot = sorted(self.free_slots)[0]
         self.free_slots.remove(free_slot)
@@ -146,6 +153,10 @@ class ParkingLot(object):
         if not self.check_slot_created():
             return "Parking lot not created!"
 
+        # Validate vehicle number
+        if not self.validate_vehicle_number(reg_no):
+            return "Invalid vehicle number"
+
         slot = self.reg_slot_map.get(reg_no.upper())
         if not slot:
             return "Not Found"
@@ -172,21 +183,22 @@ class ParkingLot(object):
         command = inputs[0]
         input_length = len(inputs)
         if command == "create_parking_lot" and input_length == 2:
-            print(self.create_parking_lot(int(inputs[1])))
+            msg = self.create_parking_lot(int(inputs[1]))
         elif command == "park" and input_length == 3:
-            print(self.park(inputs[1], inputs[2]))
+            msg = self.park(inputs[1], inputs[2])
         elif command == "leave" and input_length == 2:
-            print(self.leave(int(inputs[1])))
+            msg = self.leave(int(inputs[1]))
         elif command == "status" and input_length == 1:
-            self.status()
+            msg = self.status()
         elif command == "registration_numbers_for_cars_with_colour" and input_length == 2:
-            print(self.registration_numbers_for_cars_with_colour(inputs[1]))
+            msg = self.registration_numbers_for_cars_with_colour(inputs[1])
         elif command == "slot_numbers_for_cars_with_colour" and input_length == 2:
-            print(self.slot_numbers_for_cars_with_colour(inputs[1]))
+            msg = self.slot_numbers_for_cars_with_colour(inputs[1])
         elif command == "slot_number_for_registration_number" and input_length == 2:
-            print(self.slot_number_for_registration_number(inputs[1]))
+            msg = self.slot_number_for_registration_number(inputs[1])
         else:
-            print("Invalid arguments. Please correct it")
+            msg = "Invalid arguments. Please correct it"
+        return msg
 
     def init_interactive_mode(self):
         print("Please enter the commands. Enter 'exit' to quit")
@@ -195,7 +207,7 @@ class ParkingLot(object):
             command = raw_input()
 
             if self.is_valid_command(command.split(" ")[0].lower()):
-                self.execute_command(command)
+                print(self.execute_command(command))
             elif command:
                 print("Invalid command. Please check again.")
             if command.upper() == 'EXIT': break
@@ -203,6 +215,6 @@ class ParkingLot(object):
     def init_file_mode(self, file_path):
         for command in open(file_path, "r"):
             if command.strip() and self.is_valid_command(command.strip().split(" ")[0].lower()):
-                self.execute_command(command)
+                print(self.execute_command(command))
             elif command.strip():
                 print("Invalid command ({}). Please check again.".format(command))
