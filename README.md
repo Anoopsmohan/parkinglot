@@ -1,5 +1,9 @@
 # parkinglot
 
+## Dependencies
+```
+python 2.7 +
+```
 ## How to run the program?
 
 #### Execute following command from project directory.

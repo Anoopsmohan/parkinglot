@@ -1,7 +1,6 @@
 __author__ = 'anoop.sm'
 
 import sys
-import logging
 
 from argument_validator import ValidateArgument
 from command_executor import ParkingLot
@@ -24,11 +23,11 @@ if __name__ == '__main__':
         elif args_count == 2:
             validate_argument = ValidateArgument(sys.argv[1])
 
-            if not validate_argument.validate_file_path(): print "Incorrect file path. Please check again."
-            elif not validate_argument.validate_extension(): print "Incorrect file extension. Please use .txt file"
+            if not validate_argument.validate_file_path(): print("Incorrect file path. Please check again.")
+            elif not validate_argument.validate_extension(): print("Incorrect file extension. Please use .txt file")
             else: parking_lot.init_file_mode(sys.argv[1])
 
         else:
-            print "Invalid arguments. Please use 'python parking_lot.py <input file path>'"
+            print("Invalid arguments. Please use 'python parking_lot.py <input file path>'")
     except Exception as ex:
-        logging.error("Oops! Something went wrong. Error:{}".format(ex))
+        print("Oops! Something went wrong. Error:{}".format(ex))
