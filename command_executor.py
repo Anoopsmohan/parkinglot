@@ -118,7 +118,7 @@ class ParkingLot(object):
             return "All slots are free!"
 
         # Print slot details in table format
-        print("Slot No  Registration No \t Color")
+        print("Slot No \t Registration No \t Color")
         for k, v in self.busy_slots.items():
             print("{} \t\t {} \t\t {}".format(k, v.reg_no, v.color))
 
