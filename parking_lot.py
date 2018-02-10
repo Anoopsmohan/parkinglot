@@ -15,7 +15,7 @@ class ParkingLot(object):
 
     VALID_COMMANDS = ['create_parking_lot', 'park', 'leave', 'status', 'registration_numbers_for_cars_with_colour',
                       'slot_numbers_for_cars_with_colour', 'slot_number_for_registration_number']
-
+    
     def __init__(self):
         self.slot_count = 0
         self.free_slots = []
@@ -29,7 +29,6 @@ class ParkingLot(object):
         try:
             self.slot_count = count
             self.free_slots = list(range(1, count+1))
-            print "free_slots: {}".format(self.free_slots)
             return "Created a parking lot with {} slots".format(count)
         except Exception as e:
             return "Invalid slot count {}".format(e.message)
@@ -48,10 +47,9 @@ class ParkingLot(object):
 
         free_slot = sorted(self.free_slots)[0]
         self.free_slots.remove(free_slot)
-        self.busy_slots[free_slot] = {"color": color, "reg_no": reg_no}
+        self.busy_slots[free_slot] = {"color": color, "reg_no": reg_no.upper()}
         self.reg_slot_map[reg_no] = free_slot
 
-        print "reg_slot_map : {}".format(self.reg_slot_map)
         return "Allocated slot number: {}".format(free_slot)
 
     def leave(self, slot):
@@ -77,8 +75,6 @@ class ParkingLot(object):
         # Add slot into free slots
         self.free_slots.append(slot)
 
-        print "free slots: {}".format(self.free_slots)
-        print "busy slots: {}".format(self.busy_slots)
         return "Slot number {} is free".format(slot)
 
     def status(self):
@@ -123,7 +119,7 @@ class ParkingLot(object):
         if not self.check_slot_created():
             return "Parking lot not created!"
 
-        slot = self.reg_slot_map[reg_no]
+        slot = self.reg_slot_map.get(reg_no.upper())
         if not slot:
             return "Not Found"
 
@@ -207,4 +203,4 @@ if __name__ == '__main__':
         else:
             print "Invalid arguments. Please use 'python parking_lot.py <input file path>'"
     except Exception as ex:
-        logging.error("Oops! Something went wrong. Error:{}".format(ex.message))
+        logging.error("Oops! Something went wrong. Error:{}".format(ex))
