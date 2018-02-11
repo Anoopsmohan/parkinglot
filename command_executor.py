@@ -209,7 +209,7 @@ class ParkingLot(object):
         print("Please enter the commands. Enter 'exit' to quit")
 
         while True:
-            user_input = raw_input()
+            user_input = input()
 
             if user_input.upper() == 'EXIT':
                 print("Good Bye!")

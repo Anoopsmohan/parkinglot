@@ -2,7 +2,7 @@
 
 ## Dependencies
 ```
-  python 2.7 +
+  python 3 +
 ```
 ## How to run the program?
 
