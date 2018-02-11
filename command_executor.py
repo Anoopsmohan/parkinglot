@@ -201,7 +201,6 @@ class ParkingLot(object):
             try:
                 msg = command(self, *params)
             except Exception as ex:
-                print(ex.message)
                 msg = "Invalid arguments"
         return msg
 
