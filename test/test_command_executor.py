@@ -14,7 +14,7 @@ class MyTestCase(unittest.TestCase):
     def test_execute_command(self):
 
         # create_parking_lot, park & leave
-        self.assertEquals(self.parking_lot.execute_command("xxxx"), "Invalid arguments. Please correct it")
+        self.assertEquals(self.parking_lot.execute_command("xxxx"), "Invalid command!")
         self.assertEquals(self.parking_lot.execute_command("park KA-01-HH-1234 White"), None)
         self.assertEquals(self.parking_lot.execute_command("create_parking_lot -3"), "Invalid slot count")
         self.assertEquals(self.parking_lot.execute_command("create_parking_lot 3"), "Created a parking lot with 3 slots")

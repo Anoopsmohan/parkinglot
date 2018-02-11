@@ -1,18 +1,17 @@
 __author__ = 'anoop.sm'
 
 from car import Car
+import commands
 
 
 class ParkingLot(object):
-
-    VALID_COMMANDS = ['create_parking_lot', 'park', 'leave', 'status', 'registration_numbers_for_cars_with_colour',
-                      'slot_numbers_for_cars_with_colour', 'slot_number_for_registration_number']
 
     def __init__(self):
         self.slot_count = 0
         self.free_slots = []
         self.busy_slots = {}
         self.reg_slot_map = {}
+        self.commands = commands.Commands()
 
     def check_slot_created(self):
         if self.slot_count == 0:
@@ -21,13 +20,13 @@ class ParkingLot(object):
         else:
             return True
 
-
     def create_parking_lot(self, count):
         '''
         :param count: slot count
         :return: message
         '''
 
+        count = int(count)
         if self.slot_count > 0:
             return "Slot count already set."
 
@@ -86,6 +85,7 @@ class ParkingLot(object):
         :return: Message
         '''
 
+        slot = int(slot)
         # Check slot created or not
         if not self.check_slot_created(): return
 
@@ -186,61 +186,41 @@ class ParkingLot(object):
 
         return slot
 
-    def is_valid_command(self, command):
-        '''
-        Validate entered command
-        :param command: Command needs to be executed
-        :return: True/False
-        '''
-
-        return command in self.VALID_COMMANDS
-
-    def execute_command(self, command):
+    def execute_command(self, user_input):
         '''
         Execute entered command
-        :param command: Command needs to be executed
+        :param user_input: Command needs to be executed
         :return: Print execution output
         '''
-
-        inputs = command.strip().split(" ")
+        inputs = user_input.strip().split(" ")
         command = inputs[0]
-        input_length = len(inputs)
-        msg = None
-        if command == "create_parking_lot" and input_length == 2:
-            msg = self.create_parking_lot(int(inputs[1]))
-        elif command == "park" and input_length == 3:
-            msg = self.park(inputs[1], inputs[2])
-        elif command == "leave" and input_length == 2:
-            msg = self.leave(int(inputs[1]))
-        elif command == "status" and input_length == 1:
-            self.status()
-        elif command == "registration_numbers_for_cars_with_colour" and input_length == 2:
-            msg = self.registration_numbers_for_cars_with_colour(inputs[1])
-        elif command == "slot_numbers_for_cars_with_colour" and input_length == 2:
-            msg = self.slot_numbers_for_cars_with_colour(inputs[1])
-        elif command == "slot_number_for_registration_number" and input_length == 2:
-            msg = self.slot_number_for_registration_number(inputs[1])
-        else:
-            msg = "Invalid arguments. Please correct it"
+        params = inputs[1:]
+        command = self.commands.command_map.get(command)
+        msg = "Invalid command!"
+        if command:
+            try:
+                msg = command(self, *params)
+            except Exception as ex:
+                print(ex.message)
+                msg = "Invalid arguments"
         return msg
 
     def init_interactive_mode(self):
         print("Please enter the commands. Enter 'exit' to quit")
 
         while True:
-            command = raw_input()
+            user_input = raw_input()
 
-            if self.is_valid_command(command.split(" ")[0].lower()):
-                output = self.execute_command(command)
+            if user_input.upper() == 'EXIT':
+                print("Good Bye!")
+                break
+
+            if user_input:
+                output = self.execute_command(user_input)
                 if output: print(output)
-            elif command:
-                print("Invalid command. Please check again.")
-            if command.upper() == 'EXIT': break
 
     def init_file_mode(self, file_path):
         for command in open(file_path, "r"):
-            if command.strip() and self.is_valid_command(command.strip().split(" ")[0].lower()):
+            if command.strip():
                 output = self.execute_command(command)
                 if output: print(output)
-            elif command.strip():
-                print("Invalid command ({}). Please check again.".format(command))

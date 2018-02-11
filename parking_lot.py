@@ -22,9 +22,12 @@ def main():
         elif args_count == 2:
             validate_argument = ValidateArgument(sys.argv[1])
 
-            if not validate_argument.validate_file_path(): print("Incorrect file path. Please check again.")
-            elif not validate_argument.validate_extension(): print("Incorrect file extension. Please use .txt file")
-            else: parking_lot.init_file_mode(sys.argv[1])
+            if not validate_argument.validate_file_path():
+                print("Incorrect file path. Please check again.")
+            elif not validate_argument.validate_extension():
+                print("Incorrect file extension. Please use .txt file")
+            else:
+                parking_lot.init_file_mode(sys.argv[1])
 
         else:
             print("Invalid arguments. Please use 'python parking_lot.py <input file path>'")
