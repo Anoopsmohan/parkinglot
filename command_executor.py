@@ -15,7 +15,12 @@ class ParkingLot(object):
         self.reg_slot_map = {}
 
     def check_slot_created(self):
-        return self.slot_count > 0
+        if self.slot_count == 0:
+            print("Parking lot not created!")
+            return False
+        else:
+            return True
+
 
     def create_parking_lot(self, count):
         '''
@@ -25,6 +30,9 @@ class ParkingLot(object):
 
         if self.slot_count > 0:
             return "Slot count already set."
+
+        if count <= 0:
+            return "Invalid slot count"
 
         self.slot_count = count
         self.free_slots = list(range(1, count+1))
@@ -46,8 +54,7 @@ class ParkingLot(object):
         :return: Message
         '''
 
-        if not self.check_slot_created():
-            return "Parking lot not created!"
+        if not self.check_slot_created(): return
 
         if len(self.free_slots) == 0:
             return "Sorry, parking lot is full"
@@ -80,8 +87,7 @@ class ParkingLot(object):
         '''
 
         # Check slot created or not
-        if not self.check_slot_created():
-            return "Parking lot not created!"
+        if not self.check_slot_created(): return
 
         # Check slot is valid or not
         if slot not in list(range(1, self.slot_count+1)):
@@ -110,8 +116,7 @@ class ParkingLot(object):
         '''
 
         # Check slot created or not
-        if not self.check_slot_created():
-            return "Parking lot not created!"
+        if not self.check_slot_created(): return
 
         # Check slots are allocated or not
         if not self.busy_slots:
@@ -129,8 +134,7 @@ class ParkingLot(object):
         '''
 
         # Check slot created or not
-        if not self.check_slot_created():
-            return "Parking lot not created!"
+        if not self.check_slot_created(): return
 
         # Validate vehicle color
         if not self.validate_color(color):
@@ -149,8 +153,7 @@ class ParkingLot(object):
         '''
 
         # Check slot created or not
-        if not self.check_slot_created():
-            return "Parking lot not created!"
+        if not self.check_slot_created(): return
 
         # Validate vehicle color
         if not self.validate_color(color):
@@ -171,8 +174,7 @@ class ParkingLot(object):
         '''
 
         # Check slot created or not
-        if not self.check_slot_created():
-            return "Parking lot not created!"
+        if not self.check_slot_created(): return
 
         # Validate vehicle number
         if not self.validate_vehicle_number(reg_no):

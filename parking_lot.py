@@ -6,8 +6,7 @@ from argument_validator import ValidateArgument
 from command_executor import ParkingLot
 
 
-if __name__ == '__main__':
-
+def main():
     # Get argument count
     args_count = len(sys.argv)
 
@@ -31,3 +30,7 @@ if __name__ == '__main__':
             print("Invalid arguments. Please use 'python parking_lot.py <input file path>'")
     except Exception as ex:
         print("Oops! Something went wrong. Error:{}".format(ex))
+
+
+if __name__ == '__main__':
+    main()
